@@ -1,0 +1,14 @@
+from keras.utils.generic_utils import get_custom_objects
+from keras.layers import DepthwiseConv2D
+
+# Custom class to handle the unrecognized argument
+class FixedDepthwiseConv2D(DepthwiseConv2D):
+    def __init__(self, **kwargs):
+        kwargs.pop('groups', None)  # Ignore the 'groups' argument
+        super(FixedDepthwiseConv2D, self).__init__(**kwargs)
+
+# Update custom objects
+get_custom_objects().update({'DepthwiseConv2D': FixedDepthwiseConv2D})
+
+# Now load the model
+model = load_model('keras_model.h5')
